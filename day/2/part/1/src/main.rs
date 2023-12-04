@@ -4,7 +4,7 @@ use std::{
 };
 
 fn main() -> io::Result<()> {
-    let file = File::open("./input.txt")?;
+    let file = File::open("../../input.txt")?;
     let id_sum: u32 = BufReader::new(file)
         .lines()
         .map(|line| parse_game(&line.unwrap()))
