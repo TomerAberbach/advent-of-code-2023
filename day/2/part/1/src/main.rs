@@ -19,7 +19,7 @@ fn parse_game(line: &str) -> Game {
     let parts = line.split(": ").collect::<Vec<_>>();
     Game {
         id: parse_id(parts.first().unwrap()),
-        ball_sets: parse_ball_sets(parts.last().unwrap()),
+        cube_sets: parse_cube_sets(parts.last().unwrap()),
     }
 }
 
@@ -27,14 +27,14 @@ fn parse_id(string: &str) -> u32 {
     string["Game ".len()..].parse().unwrap()
 }
 
-fn parse_ball_sets(string: &str) -> Vec<BallSet> {
+fn parse_cube_sets(string: &str) -> Vec<CubeSet> {
     string
         .split("; ")
-        .map(|string| parse_ball_set(string))
+        .map(|string| parse_cube_set(string))
         .collect()
 }
 
-fn parse_ball_set(string: &str) -> BallSet {
+fn parse_cube_set(string: &str) -> CubeSet {
     let mut red = 0;
     let mut green = 0;
     let mut blue = 0;
@@ -50,18 +50,18 @@ fn parse_ball_set(string: &str) -> BallSet {
         }
     }
 
-    BallSet { red, green, blue }
+    CubeSet { red, green, blue }
 }
 
 fn is_game_possible(game: &Game) -> bool {
-    game.ball_sets.iter().all(|ball_set| {
-        ball_set.red <= BAG_BALL_SET.red
-            && ball_set.green <= BAG_BALL_SET.green
-            && ball_set.blue <= BAG_BALL_SET.blue
+    game.cube_sets.iter().all(|cube_set| {
+        cube_set.red <= BAG_CUBE_SET.red
+            && cube_set.green <= BAG_CUBE_SET.green
+            && cube_set.blue <= BAG_CUBE_SET.blue
     })
 }
 
-const BAG_BALL_SET: BallSet = BallSet {
+const BAG_CUBE_SET: CubeSet = CubeSet {
     red: 12,
     green: 13,
     blue: 14,
@@ -69,10 +69,10 @@ const BAG_BALL_SET: BallSet = BallSet {
 
 struct Game {
     id: u32,
-    ball_sets: Vec<BallSet>,
+    cube_sets: Vec<CubeSet>,
 }
 
-struct BallSet {
+struct CubeSet {
     red: u8,
     green: u8,
     blue: u8,

@@ -8,7 +8,7 @@ fn main() -> io::Result<()> {
     let id_sum: u32 = BufReader::new(file)
         .lines()
         .map(|line| parse_game(&line.unwrap()))
-        .map(|game| compute_power(&get_minimum_ball_set(&game)))
+        .map(|game| compute_power(&get_minimum_cube_set(&game)))
         .sum();
     println!("{}", id_sum);
     Ok(())
@@ -17,18 +17,18 @@ fn main() -> io::Result<()> {
 fn parse_game(line: &str) -> Game {
     let parts = line.split(": ").collect::<Vec<_>>();
     Game {
-        ball_sets: parse_ball_sets(parts.last().unwrap()),
+        cube_sets: parse_cube_sets(parts.last().unwrap()),
     }
 }
 
-fn parse_ball_sets(string: &str) -> Vec<BallSet> {
+fn parse_cube_sets(string: &str) -> Vec<CubeSet> {
     string
         .split("; ")
-        .map(|string| parse_ball_set(string))
+        .map(|string| parse_cube_set(string))
         .collect()
 }
 
-fn parse_ball_set(string: &str) -> BallSet {
+fn parse_cube_set(string: &str) -> CubeSet {
     let mut red = 0;
     let mut green = 0;
     let mut blue = 0;
@@ -44,34 +44,34 @@ fn parse_ball_set(string: &str) -> BallSet {
         }
     }
 
-    BallSet { red, green, blue }
+    CubeSet { red, green, blue }
 }
 
-fn get_minimum_ball_set(game: &Game) -> BallSet {
+fn get_minimum_cube_set(game: &Game) -> CubeSet {
     let mut min_red = 0;
     let mut min_green = 0;
     let mut min_blue = 0;
-    for ball_set in game.ball_sets.iter() {
-        min_red = min_red.max(ball_set.red);
-        min_green = min_green.max(ball_set.green);
-        min_blue = min_blue.max(ball_set.blue);
+    for cube_set in game.cube_sets.iter() {
+        min_red = min_red.max(cube_set.red);
+        min_green = min_green.max(cube_set.green);
+        min_blue = min_blue.max(cube_set.blue);
     }
-    BallSet {
+    CubeSet {
         red: min_red,
         green: min_green,
         blue: min_blue,
     }
 }
 
-fn compute_power(ball_set: &BallSet) -> u32 {
-    ball_set.red as u32 * ball_set.green as u32 * ball_set.blue as u32
+fn compute_power(cube_set: &CubeSet) -> u32 {
+    cube_set.red as u32 * cube_set.green as u32 * cube_set.blue as u32
 }
 
 struct Game {
-    ball_sets: Vec<BallSet>,
+    cube_sets: Vec<CubeSet>,
 }
 
-struct BallSet {
+struct CubeSet {
     red: u8,
     green: u8,
     blue: u8,
