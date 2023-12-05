@@ -48,7 +48,6 @@ fn compute_win_count(card: &Card) -> u32 {
         .count() as u32
 }
 
-#[derive(Clone)]
 struct Card {
     winning_numbers: HashSet<u32>,
     actual_numbers: HashSet<u32>,
